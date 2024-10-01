@@ -26,6 +26,8 @@ const freezeButton = document.querySelector('#freeze-button');
 const doctorButton = document.querySelector('#doctor-button');
 const potatoButton = document.querySelector('#potato-button');
 const charSelectorContainer = document.querySelector('#character-selection-container');
+const doctorText = document.querySelector('#doctor-text');
+const potatoText = document.querySelector('#potato-text');
 
 
 
@@ -210,11 +212,16 @@ freezeButton.addEventListener('click',()=>{
 
 doctorButton.addEventListener('click',()=>{
     doctorButton.style.backgroundColor = '#04ca01';
+    doctorText.style.color = '#fff';
+    potatoText.style.color = '#04ca01';
     potatoButton.style.backgroundColor = '#fff';
+
     charSelected ='doctor'
 });
 potatoButton.addEventListener('click',()=>{
     potatoButton.style.backgroundColor = '#04ca01';
+    potatoText.style.color = '#fff';
+    doctorText.style.color = '#04ca01';
     doctorButton.style.backgroundColor = '#fff';
     charSelected ='potato'
 });
