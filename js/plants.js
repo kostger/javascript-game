@@ -1,5 +1,4 @@
-const plantImage = new Image();
-plantImage.src = '../assets/doctor.png';
+
 
 
 const projectileImage = new Image();
@@ -10,12 +9,13 @@ const spriteWidth = 37.7;
 const spriteHeight = 46;
 
 export class Plant {
-    constructor(x, y,ctx,grid,canvas) {
+    constructor(x, y,ctx,grid,canvas,health,isShooting,img) {
         this.x = x;
         this.y = y;
         this.width = grid.cellWidth;
         this.height = grid.cellHeight;
-        this.health = 100;
+        this.isShooting = isShooting;
+        this.health = health;
         this.projectiles = [];
         this.ctx = ctx;
         this.grid = grid;
@@ -24,6 +24,7 @@ export class Plant {
         this.frameY = 1;
         this.gameFrame = 0;
         this.staggerFrames = 20;
+        this.img = img;
         // Shoot projectiles every 2 seconds
         this.shootInterval = setInterval(() => {
             this.shoot();
@@ -31,8 +32,15 @@ export class Plant {
     }
 
     shoot() {
-        const projectile = new Projectile(this.x + this.width, this.y + this.height / 2 - 10,this.ctx);
-        this.projectiles.push(projectile);
+        if(this.isShooting){
+            const projectile = new Projectile(this.x + this.width, this.y + this.height / 2 - 10,this.ctx);
+            this.projectiles.push(projectile);
+        }
+        else{
+
+            clearInterval(this.shootInterval);
+        }
+        
     }
 
     update() {
@@ -48,15 +56,20 @@ export class Plant {
     }
 
     draw() {
-    
-        this.ctx.drawImage(plantImage,spriteWidth*this.frameX,70,spriteWidth,spriteHeight,this.x, this.y, this.width, this.height);
-        //something is not working properly here check later
-        if(this.gameFrame % this.staggerFrames === 0){
-            if(this.frameX < 4)this.frameX++;
-            else this.frameX = 0;
+        if(this.isShooting){
+            this.ctx.drawImage(this.img,spriteWidth*this.frameX,70,spriteWidth,spriteHeight,this.x, this.y, this.width, this.height);
+            //something is not working properly here check later
+            if(this.gameFrame % this.staggerFrames === 0){
+                if(this.frameX < 4)this.frameX++;
+                else this.frameX = 0;
+            }
+            this.gameFrame++;
+            requestAnimationFrame(this.draw);
         }
-        this.gameFrame++;
-        requestAnimationFrame(this.draw);
+        else{
+            this.ctx.drawImage(this.img,this.x, this.y, this.width, this.height)
+        }
+        
     }
 
     // Clear the shooting interval if plant is destroyed

@@ -5,6 +5,12 @@ virusImage.src = '../assets/Enemy1.png';
 const virusAltImage = new Image();
 virusAltImage.src = '../assets/Enemy2.png';
 
+const plantImage = new Image();
+plantImage.src = '../assets/doctor.png';
+
+const potatoImage = new Image();
+potatoImage.src = '../assets/potato.png';
+
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d");
 const coinsElement = document.querySelector("#coin-text");
@@ -16,6 +22,11 @@ const livesContainer = document.querySelector('#lives-text')
 const restartButton = document.querySelector('#restart-button');
 const waveContainer = document.querySelector('#wave-text');
 const countDowntext = document.querySelector('#countdown-text');
+const freezeButton = document.querySelector('#freeze-button');
+const doctorButton = document.querySelector('#doctor-button');
+const potatoButton = document.querySelector('#potato-button');
+const charSelectorContainer = document.querySelector('#character-selection-container');
+
 
 
 canvas.width = 800;
@@ -23,6 +34,9 @@ canvas.height = 600;
 
 const plants = [];
 const zombies =[];
+
+let charSelected = 'doctor';
+
 
 
 // MAP DRAWING
@@ -124,7 +138,7 @@ class Game{
         }, 3000);
         this.wave += 1;
         this.zombiesPerWave += 10;  // Increase number of zombies for the next wave
-        this.zombieFrequency -= 2000;
+        this.zombieFrequency = this.zombieFrequency/2;
         this.zombiesRemaining = this.zombiesPerWave;
         this.updateWaveDisplay();
         this.spawnWave();
@@ -144,12 +158,28 @@ canvas.addEventListener("click", function(event) {
 
     // Place a new plant if there's not already one at the clicked position
     const plantExists = plants.some(plant => plant.x === gridX && plant.y === gridY);
+    let health;
+    let isShooting;
+    let image;
+    if(charSelected === 'doctor'){
+        //doctor chars
+        health = 100;
+        isShooting = true;
+        image = plantImage;
 
+    }
+    if(charSelected === 'potato'){
+        //potato stats
+        health = 700;
+        isShooting = false;
+        image = potatoImage;
+
+    }
+   console.log(health,isShooting)
     if (!plantExists) {
         if(game.coins >= 200) {
-            console.log(gridX, gridY);
             game.deductCoins(200); 
-            plants.push(new Plant(gridX, gridY, ctx, grid, canvas));
+            plants.push(new Plant(gridX, gridY, ctx, grid, canvas,health,isShooting,image));
         } else {
             console.log("Not enough coins to plant.");
         }
@@ -161,10 +191,42 @@ canvas.addEventListener("click", function(event) {
 playButton.addEventListener("click",()=>{
     gameIntro.style.display = 'none';
     gameContainer.style.display = 'flex';
+    charSelectorContainer.style.display = 'flex';
     gameLoop();
 })
 
 restartButton.addEventListener('click',()=>location.reload());
+
+freezeButton.addEventListener('click',()=>{
+    zombies.forEach((zombie)=>{
+        zombie.speed = 0.05;
+        setTimeout(()=>{
+            zombie.speed = 1;
+        },3000);
+    })
+    startCooldown(freezeButton);
+}
+);
+
+doctorButton.addEventListener('click',()=>{
+    doctorButton.style.backgroundColor = '#04ca01';
+    potatoButton.style.backgroundColor = '#fff';
+    charSelected ='doctor'
+});
+potatoButton.addEventListener('click',()=>{
+    potatoButton.style.backgroundColor = '#04ca01';
+    doctorButton.style.backgroundColor = '#fff';
+    charSelected ='potato'
+});
+
+function startCooldown(element){
+    element.disabled = true;
+    element.style.backgroundColor = 'gray';
+    setTimeout(() => {
+        element.disabled=false;
+        element.style.backgroundColor = 'aqua';
+    },10000);
+}
 
 //COLLIDE FUNCTION
 function isColliding(objectA, objectB) {
@@ -182,9 +244,7 @@ function spawnZombie(health,img) {
     zombies.push(zombie);  // Add the new zombie to the array
 }
 
-function waveHandler(wave){
 
-}
 const game = new Game();
 setInterval(()=>{
     game.giveCoins();
@@ -196,8 +256,8 @@ function gameLoop() {
     drawBackground();
     drawGrid();
 
-    console.log(plants);
-    console.log(zombies);
+    // console.log(plants);
+    // console.log(zombies);
     // Update and draw plants
     plants.forEach((plant,plantIndex) => {
         plant.draw();
@@ -253,6 +313,7 @@ function gameLoop() {
         requestAnimationFrame(gameLoop);//the actual loop so the animation is possible
     }
     else{
+        charSelectorContainer.style.display = 'none';
         gameContainer.style.display='none';
         gameEnd.style.display='flex';
     }                                   

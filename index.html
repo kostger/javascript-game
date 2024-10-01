@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link href='https://fonts.googleapis.com/css?family=Luckiest Guy' rel='stylesheet'>
     <link rel="stylesheet" href="./style.css" />
-    <title>Plants vs Zombies</title>
+    <title>Doctors vs Covid</title>
   </head>
   <body>
     <main>
@@ -26,14 +26,23 @@
 
       <div id="game-container">
         <div id = "score-container">
+            <div id="superpowers-container" >
+              <button id="freeze-button" ><img src="./assets/snowflake.png" width="40" height="40"/><p>FREEZE</p></button>
+              <!-- <button id="other-button">other</button> -->
+            </div>
             <p id="coin-container">Coins:<span id = "coin-text" >0</span></p>
             <p id="lives-container">Lives:<span id = "lives-text">5</span></p>
             <p id="wave-container">Wave:<span id="wave-text">1</span></p>
         </div>
         <canvas id="game-canvas"></canvas>
         <h1 id="countdown-text" class="squiggly">NEXT WAVE</h1>
+      
+        
       </div>
-
+      <div id="character-selection-container">
+        <button id="doctor-button"><img src="./assets//doctor-gif.gif"/><p>DOCTOR</p></button>
+        <button id="potato-button"><img  src="./assets//potato.png" /> <p>POTATO</p></button>
+      </div>
       <!-- #game-end is initially hidden using CSS style display: none -->
       <div id="game-end">
         <p id="game-over">
@@ -42,7 +51,7 @@
         <p id="infected-text">
           You have been infected stay home for the week!
         </p>
-        <button id="restart-button">Or Spread It</button>
+        <button id="restart-button">Restart</button>
       </div>
       
     </main>
