@@ -4,12 +4,13 @@
 ## Description
 **COVID vs Doctors** is a strategic game where players control a team of doctors battling against the spread of the COVID-19 virus. The objective is to manage resources, make decisions, and eliminate the virus before it spreads uncontrollably.
 
+## Live Demo
+
 ## Features
-- **Doctor Units**: Different types of doctors with unique skills (e.g., virologists, epidemiologists, nurses).
-- **Virus Types**: Various strains of the virus that evolve over time.
-- **Resource Management**: Control medical supplies, hospital beds, and vaccines.
-- **Strategic Gameplay**: Plan your moves carefully to stop the virus from spreading.
-- **Level System**: Progress through increasingly difficult levels.
+- **Doctor Units**: Different types of doctors with unique skills (apparently potatoes are a type of doctor now).
+- **Virus Types**: Various strains of the virus that evolve over time(pirate viruses and angry viruses).
+- **Strategic Gameplay**: Plan your moves carefully to stop the virus from spreading by using superpowers such as the freeze button.
+- **Wave System**: Progress through increasingly difficult waves.
 
 ## Installation
 1. Clone the repository:
@@ -20,36 +21,11 @@
    ```bash
    cd covid-vs-doctors
    ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the game:
-   ```bash
-   npm start
-   ```
+3. Open with live server
+   
 
 ## How to Play
-- Select your team of doctors.
+- Select your team of doctors or potatoes.
 - Use available resources to fight the virus.
 - Adapt your strategy as the virus evolves.
 
-## Contributing
-We welcome contributions! Please follow the guidelines below:
-1. Fork the repository.
-2. Create a new branch for your feature:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add feature"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Open a pull request.
-
-## License
-This project is licensed under the MIT License.
