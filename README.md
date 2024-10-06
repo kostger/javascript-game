@@ -4,8 +4,8 @@
 ## Description
 **COVID vs Doctors** is a strategic game where players control a team of doctors battling against the spread of the COVID-19 virus. The objective is to manage resources, make decisions, and eliminate the virus before it spreads uncontrollably.
 
-## Live Demo
-
+## 🚀 Live Demo
+[Visit the website](https://doctors-vs-covid.vercel.app/) 
 ## Features
 - **Doctor Units**: Different types of doctors with unique skills (apparently potatoes are a type of doctor now).
 - **Virus Types**: Various strains of the virus that evolve over time(pirate viruses and angry viruses).
