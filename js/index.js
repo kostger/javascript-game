@@ -1,12 +1,12 @@
-import { Plant } from "./plants.js";
+import { Doctor } from "./doctors.js";
 const virusImage = new Image();
 virusImage.src = '../assets/Enemy1.png';
 
 const virusAltImage = new Image();
 virusAltImage.src = '../assets/Enemy2.png';
 
-const plantImage = new Image();
-plantImage.src = '../assets/doctor.png';
+const doctorImage = new Image();
+doctorImage.src = '../assets/doctor.png';
 
 const potatoImage = new Image();
 potatoImage.src = '../assets/potato.png';
@@ -29,19 +29,24 @@ const charSelectorContainer = document.querySelector('#character-selection-conta
 const doctorText = document.querySelector('#doctor-text');
 const potatoText = document.querySelector('#potato-text');
 
+var popSound = new Audio('../assets/pop.mp3');
+
+var soundtrack = new Audio('../assets/soundtrack.mp3');
 
 
 canvas.width = 800;
 canvas.height = 600;
 
-const plants = [];
-const zombies =[];
+//initialize empty doctors and zombies arrays
+let doctors = [];
+let zombies =[];
 
+//initialize selected character
 let charSelected = 'doctor';
 
 
 
-// MAP DRAWING
+// MAP DRAWING FUNCTIONS
 function drawBackground() {
     ctx.fillStyle = "#a7ced6";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -64,8 +69,6 @@ function drawGrid() {
 
 
 //CLASSES
-
-
 class Zombie {
     constructor(x, y,health,img) {
         this.x = x;
@@ -82,7 +85,6 @@ class Zombie {
     }
 
     draw() {
-        // ctx.fillStyle = "brown";
         ctx.drawImage(this.img,this.x, this.y, this.width, this.height);
     }
 }
@@ -94,6 +96,7 @@ class Game{
         this.zombiesPerWave = 10;
         this.zombiesRemaining = this.zombiesPerWave;
         this.zombieFrequency = 5000;
+        this.hasStarted = false;
     }
     giveCoins(){
         this.coins += 100;
@@ -133,6 +136,7 @@ class Game{
             }
         }, this.zombieFrequency);  // Spawn a zombie every 1 second
     }
+    
     nextWave() {
         countDowntext.style.display = 'flex';
         setTimeout(() => {
@@ -158,8 +162,8 @@ canvas.addEventListener("click", function(event) {
     const gridX = Math.floor(mouseX / grid.cellWidth) * grid.cellWidth;
     const gridY = Math.floor(mouseY / grid.cellHeight) * grid.cellHeight;
 
-    // Place a new plant if there's not already one at the clicked position
-    const plantExists = plants.some(plant => plant.x === gridX && plant.y === gridY);
+    // Place a new doctor if there's not already one at the clicked position
+    const doctorExists = doctors.some(doctor => doctor.x === gridX && doctor.y === gridY);
     let health;
     let isShooting;
     let image;
@@ -167,7 +171,7 @@ canvas.addEventListener("click", function(event) {
         //doctor chars
         health = 100;
         isShooting = true;
-        image = plantImage;
+        image = doctorImage;
 
     }
     if(charSelected === 'potato'){
@@ -178,15 +182,15 @@ canvas.addEventListener("click", function(event) {
 
     }
    console.log(health,isShooting)
-    if (!plantExists) {
+    if (!doctorExists) {
         if(game.coins >= 200) {
             game.deductCoins(200); 
-            plants.push(new Plant(gridX, gridY, ctx, grid, canvas,health,isShooting,image));
+            doctors.push(new Doctor(gridX, gridY, ctx, grid, canvas,health,isShooting,image));
         } else {
-            console.log("Not enough coins to plant.");
+            console.log("Not enough coins for new Doctor.");
         }
     } else {
-        console.log("A plant already exists at this position.");
+        console.log("A doctor already exists at this position.");
     }
 });
 
@@ -195,6 +199,8 @@ playButton.addEventListener("click",()=>{
     gameContainer.style.display = 'flex';
     charSelectorContainer.style.display = 'flex';
     gameLoop();
+    spawn();
+    
 })
 
 restartButton.addEventListener('click',()=>location.reload());
@@ -226,6 +232,19 @@ potatoButton.addEventListener('click',()=>{
     charSelected ='potato'
 });
 
+// GAME FUNCTIONS
+
+//start spawning function
+function spawn(){
+    if(game.hasStarted){
+        game.spawnWave();
+        setInterval(()=>{
+            game.giveCoins();
+            
+        },3000);
+    }
+}
+// superpower cooldown function
 function startCooldown(element){
     element.disabled = true;
     element.style.backgroundColor = 'gray';
@@ -252,23 +271,23 @@ function spawnZombie(health,img) {
 }
 
 
+
+
 const game = new Game();
-setInterval(()=>{
-    game.giveCoins();
-    
-},3000);
+
 
 //GAME LOOP
 function gameLoop() {
     drawBackground();
     drawGrid();
+    soundtrack.play();
+    soundtrack.loop = true;
+    game.hasStarted = true;
 
-    // console.log(plants);
-    // console.log(zombies);
-    // Update and draw plants
-    plants.forEach((plant,plantIndex) => {
-        plant.draw();
-        plant.update();
+    // Update and draw doctors
+    doctors.forEach((doctor,doctorIndex) => {
+        doctor.draw();
+        doctor.update();
  
     });
 
@@ -277,29 +296,29 @@ function gameLoop() {
         zombie.move();
         zombie.draw();
 
-        // Check for collisions with plants or projectiles
-        plants.forEach((plant,plantIndex) => {
-            // Check for collisions with the plant itself
-            if (isColliding(zombie, plant)) {
-                console.log('Collision detected between zombie and plant!'); //Here we want the zombie to eat the plant slowly
+        // Check for collisions with doctors or projectiles
+        doctors.forEach((doctor,doctorIndex) => {
+            // Check for collisions with the doctor itself
+            if (isColliding(zombie, doctor)) {
+                console.log('Collision detected between zombie and doctor!'); //Here we want the zombie to eat the doctor slowly
                 zombie.speed = 0;                                           // Stop the zombie
-                plant.health -= 1;                                         // Damage the plant
-                if(plant.health <= 0){
-                    plants.splice(plantIndex,1);
+                doctor.health -= 1;                                         // Damage the doctor
+                if(doctor.health <= 0){
+                    doctors.splice(doctorIndex,1);
                     zombie.speed = 1;
                 }  
             }
 
-            // Check for collisions with plant's projectiles
-            plant.projectiles.forEach((projectile, projIndex) => {
+            // Check for collisions with doctor's projectiles
+            doctor.projectiles.forEach((projectile, projIndex) => {
                 if (isColliding(zombie, projectile)) {
                     console.log('Zombie hit by projectile!');                   
                     zombie.health -= 50;                                    // Reduce zombie health
-                    plant.projectiles.splice(projIndex, 1);                 // Remove projectile
+                    doctor.projectiles.splice(projIndex, 1);                 // Remove projectile
                 }
                 //If projectile goes off-screen we remove it
                 if(projectile.x > 900){ 
-                    plant.projectiles.splice(projIndex, 1);
+                    doctor.projectiles.splice(projIndex, 1);
                 }
             });
         });
@@ -311,6 +330,7 @@ function gameLoop() {
         }
         // Remove zombie if it died
         if(zombie.health <= 0){
+            popSound.play();
             zombies.splice(index, 1);// Remove the zombie
             
         }
@@ -323,7 +343,9 @@ function gameLoop() {
         charSelectorContainer.style.display = 'none';
         gameContainer.style.display='none';
         gameEnd.style.display='flex';
+        game.hasStarted = false;
+        soundtrack.loop = false;
+
     }                                   
 }
 
-game.spawnWave();

@@ -1,14 +1,13 @@
-
-
-
 const projectileImage = new Image();
 projectileImage.src = '../assets/syringe.png';
 projectileImage.style.transform = 'rotate(90deg)';
 
+var shootSound = new Audio('../assets/shoot.mp3');
+shootSound.volume = 0.2;
 const spriteWidth = 37.7;
 const spriteHeight = 46;
 
-export class Plant {
+export class Doctor {
     constructor(x, y,ctx,grid,canvas,health,isShooting,img) {
         this.x = x;
         this.y = y;
@@ -35,6 +34,7 @@ export class Plant {
         if(this.isShooting){
             const projectile = new Projectile(this.x + this.width, this.y + this.height / 2 - 10,this.ctx);
             this.projectiles.push(projectile);
+            shootSound.play();
         }
         else{
 
