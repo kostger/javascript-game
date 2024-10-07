@@ -34,7 +34,7 @@ export class Doctor {
         if(this.isShooting){
             const projectile = new Projectile(this.x + this.width, this.y + this.height / 2 - 10,this.ctx);
             this.projectiles.push(projectile);
-            shootSound.play();
+            // shootSound.play();
         }
         else{
 
