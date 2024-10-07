@@ -1,4 +1,6 @@
 import { Doctor } from "./doctors.js";
+
+//INITIALIZE ASSETS
 const virusImage = new Image();
 virusImage.src = '../assets/Enemy1.png';
 
@@ -11,6 +13,11 @@ doctorImage.src = '../assets/doctor.png';
 const potatoImage = new Image();
 potatoImage.src = '../assets/potato.png';
 
+var popSound = new Audio('../assets/pop.mp3');
+
+var soundtrack = new Audio('../assets/soundtrack.mp3');
+
+//QUERY SELECTORS
 const canvas = document.getElementById("game-canvas");
 const ctx = canvas.getContext("2d");
 const coinsElement = document.querySelector("#coin-text");
@@ -29,24 +36,10 @@ const charSelectorContainer = document.querySelector('#character-selection-conta
 const doctorText = document.querySelector('#doctor-text');
 const potatoText = document.querySelector('#potato-text');
 
-var popSound = new Audio('../assets/pop.mp3');
-
-var soundtrack = new Audio('../assets/soundtrack.mp3');
-
-
+// MAP DRAWING
 canvas.width = 800;
 canvas.height = 600;
 
-//initialize empty doctors and zombies arrays
-let doctors = [];
-let zombies =[];
-
-//initialize selected character
-let charSelected = 'doctor';
-
-
-
-// MAP DRAWING FUNCTIONS
 function drawBackground() {
     ctx.fillStyle = "#a7ced6";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -67,6 +60,12 @@ function drawGrid() {
 }
 
 
+//initialize empty doctors and zombies arrays
+let doctors = [];
+let zombies =[];
+
+//initialize selected character
+let charSelected = 'doctor';
 
 //CLASSES
 class Zombie {
@@ -343,6 +342,7 @@ function gameLoop() {
         charSelectorContainer.style.display = 'none';
         gameContainer.style.display='none';
         gameEnd.style.display='flex';
+        doctors.splice()
         game.hasStarted = false;
         soundtrack.loop = false;
 

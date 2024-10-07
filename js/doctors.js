@@ -13,7 +13,7 @@ export class Doctor {
         this.y = y;
         this.width = grid.cellWidth;
         this.height = grid.cellHeight;
-        this.isShooting = isShooting;
+        this.isShooting = isShooting; //because some doctors do not shoot projectiles
         this.health = health;
         this.projectiles = [];
         this.ctx = ctx;
@@ -48,7 +48,7 @@ export class Doctor {
             projectile.move();
             projectile.draw();
 
-            // Remove if it goes off-screen
+            // Remove if it goes off-screen for performance
             if (projectile.x > this.canvas.width) {
                 this.projectiles.splice(index, 1);
             }
@@ -72,7 +72,7 @@ export class Doctor {
         
     }
 
-    // Clear the shooting interval if plant is destroyed
+    // Clear the shooting interval if doctor is destroyed
     destroy() {
         clearInterval(this.shootInterval);
     }
@@ -90,7 +90,6 @@ export class Projectile{
         this.x += this.speed;
     }
     draw(){
-        this.ctx.fillStyle ='purple';
         this.ctx.drawImage(projectileImage,this.x,this.y,this.width,this.height);
     }
 }
