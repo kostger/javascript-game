@@ -1,8 +1,8 @@
 
-# COVID vs Doctors
+# Doctors VS Covid
 
 ## Description
-**COVID vs Doctors** is a strategic game where players control a team of doctors battling against the spread of the COVID-19 virus. The objective is to manage resources, make decisions, and eliminate the virus before it spreads uncontrollably.
+**Doctors vs Covid** is a strategic game where players control a team of doctors battling against the spread of the COVID-19 virus. The objective is to manage resources, make decisions, and eliminate the virus before it spreads uncontrollably.
 
 ## 🚀 Live Demo
 [Visit the website](https://doctors-vs-covid.vercel.app/) 
